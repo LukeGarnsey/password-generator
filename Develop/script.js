@@ -1,9 +1,8 @@
 // Assignment code here
-
-
+var letters = "abcdefghijklmnopqrstuvwxyz";
+var size = 8;
 // Get references to the #generate element
 var generateBtn = document.querySelector("#generate");
-
 // Write password to the #password input
 function writePassword() {
   var password = generatePassword();
@@ -11,6 +10,13 @@ function writePassword() {
 
   passwordText.value = password;
 
+}
+function generatePassword(){
+  password = "";
+  while(password.length < size){
+    password += letters[Math.floor(Math.random() * letters.length)];
+  }
+  return password;
 }
 
 // Add event listener to generate button
