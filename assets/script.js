@@ -1,9 +1,8 @@
-// Assignment code here
 var lowercase = "abcdefghijklmnopqrstuvwxyz";
 var uppercase = lowercase.toUpperCase();
 var numeric = "1234567890";
 var special = "!@#$%^&*()[]{}";
-// var size = 8;
+
 // Get references to the #generate element
 var generateBtn = document.querySelector("#generate");
 // Write password to the #password input
@@ -14,24 +13,42 @@ function writePassword() {
   passwordText.value = password;
 
 }
+
+//This function starts the flow for generating a password
 function generatePassword(){
   let size = getPasswordSize();
+  if(size == null)
+    return "'password generation canceled'";
+
   characters = buildCharacterString();
+  if(characters == null)
+    return "'password generation canceled'";
+
   password = "";
   while(password.length < size){
     password += characters[Math.floor(Math.random() * characters.length)];
   }
   return password;
 }
+
+//Returns a number value to indicate length of password, returning null will indicate application to quit flow.
 function getPasswordSize(){
-  let size = parseInt(prompt("How long should the password be? (8 - 128)"), 0);
-  // console.log(size);
+  let size = 0;
+  promptText = prompt("How long should the password be? (8 - 128)");
+  if(promptText == null){
+    //Cancel pressed
+    return null;
+  }
+
+  size = parseInt(promptText, 0);
+  
   if(Number.isNaN(size) || size < 8 || size > 128){
     size = getPasswordSize();
   }
   
   return size;
 }
+//Returns a string with valid characters for the password, returning null will indicate application to quit flow.
 function buildCharacterString(){
   let useLowercase = false;
   let useUppercase = false;
@@ -40,12 +57,17 @@ function buildCharacterString(){
   let notFirstTime = false;
   while(!useLowercase && !useUppercase && !useNumerics && !useSpecialCharacters){
     if(notFirstTime){
-      prompt("You cannot say 'No' to all choices.");
+      const cancel = prompt("You cannot say 'No' to all choices.") == null;
+      if(cancel)
+        return null;
     }
-    useLowercase = yesNoPrompt("Should the password contain: Lowercase?");
-    useUppercase = yesNoPrompt("Should the password contain: Uppercase?");
-    useNumerics = yesNoPrompt("Should the password contain: Numerics?");
-    useSpecialCharacters = yesNoPrompt("Should the password contain: Special Characters?");
+
+    //Ask user if they want to include different characters.
+    useLowercase = prompt("Should the password contain: Lowercase?") != null;
+    useUppercase = prompt("Should the password contain: Uppercase?") != null;
+    useNumerics = prompt("Should the password contain: Numerics?") != null;
+    useSpecialCharacters = prompt("Should the password contain: Special Characters?") != null;
+    
     notFirstTime = true;
   }
   
@@ -61,14 +83,6 @@ function buildCharacterString(){
 
   return characters;
 }
-function yesNoPrompt(text, showExplainText){
-  
-  let promptText = prompt((showExplainText?"(Invalid Entry) ":"") + text + " (Y/N)").toLowerCase();
 
-  if(promptText != "y" && promptText != "n")
-    promptText = yesNoPrompt(text, true);
-
-  return promptText == "y";
-}
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
