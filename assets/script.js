@@ -57,16 +57,15 @@ function buildCharacterString(){
   let notFirstTime = false;
   while(!useLowercase && !useUppercase && !useNumerics && !useSpecialCharacters){
     if(notFirstTime){
-      const cancel = prompt("You cannot say 'No' to all choices.") == null;
-      if(cancel)
+      if(!confirm("You cannot say 'No' to all choices."))
         return null;
     }
 
     //Ask user if they want to include different characters.
-    useLowercase = prompt("Should the password contain: Lowercase?") != null;
-    useUppercase = prompt("Should the password contain: Uppercase?") != null;
-    useNumerics = prompt("Should the password contain: Numerics?") != null;
-    useSpecialCharacters = prompt("Should the password contain: Special Characters?") != null;
+    useLowercase = confirm("Should the password contain: Lowercase?");
+    useUppercase = confirm("Should the password contain: Uppercase?");
+    useNumerics = confirm("Should the password contain: Numerics?");
+    useSpecialCharacters = confirm("Should the password contain: Special Characters?");
     
     notFirstTime = true;
   }
